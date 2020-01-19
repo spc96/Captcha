@@ -1,0 +1,89 @@
+h1 {
+    padding: 10px;
+    text-align:center;
+    background-color: rgb(0, 0, 0);
+    color: rgb(224, 224, 224);
+    font-family: Geneva
+ }
+
+h2 {
+    margin: auto;
+    width: 75%;
+    padding: 10px;
+    text-align:center;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    font-family: Geneva
+ }
+
+.box-2 {
+  border: 2px solid;
+  text-align:center;
+  border-image-source: linear-gradient(45deg,
+   rgb(45, 217, 223), rgb(190, 2, 2));
+  border-image-slice: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+body {
+    text-align:left;
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-family: Geneva}
+button {
+  width: 30%;
+  background-color: rgba(11, 239, 255, 0.795);
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 15px 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: .8s;
+}
+
+.btn_group{
+  text-align: center;
+}
+
+button:hover {
+  transition: .7s;
+  background-color: rgba(190, 2, 2, .6);
+}
+
+p {
+  margin: auto;
+  padding: 5px
+}
+
+form {
+  padding: 3%
+}
+
+
+button:hover {
+  transition: .7s;
+  background-color: rgba(190, 2, 2, .6);
+}
+
+p {
+  margin: auto;
+  padding: 2px
+}
+
+form {
+  padding: 3%
+}
+
+.answer {
+  text-align: left;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.question{
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
