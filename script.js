@@ -21,7 +21,7 @@ class Captcha {
     let charStr = charArr.join("");
     return charStr;
 }
-  genCanvas(){
+  genCanvas(str){
     let c = document.getElementById("captchaID");
     c.width = this.width;
     c.height = this.height;
@@ -36,25 +36,27 @@ class Captcha {
     ctx.putImageData(imageData, 0, 0);
     let randColor = `rgb(${[Math.random()*128 + 128,
                         Math.random()*128 + 128,
-                        Math.random()*128 + 128, .3].join()})`;
+                        Math.random()*128 + 128, .4].join()})`;
 
     ctx.transform(1, 0, 0, 1, 0, 0);
     ctx.fillStyle=randColor;
-    ctx.font = "40px Times";
-    ctx.fillText(this.genStr(), 15, 60);
+    ctx.font = "45px Times";
+
+    ctx.fillText(captchaStr, 5, 50);
     }
 
   }
 }
 
-let cap = new Captcha(6,charsList, 150, 100);
-cap.genCanvas()
+let cap = new Captcha(6,charsList, 200, 80);
 
-var captchaStr = cap.genStr()
+let captchaStr = cap.genStr();
+cap.genCanvas(captchaStr);
 document.getElementById('letters').innerHTML = captchaStr;
 
 function update() {
-  window.captchaStr = cap.genStr();
+  captchaStr = cap.genStr();
+  cap.genCanvas(captchaStr);
   document.getElementById('letters').innerHTML = captchaStr;
 }
 
@@ -71,4 +73,4 @@ function validateForm() {
 }
 
 const genBtn = document.getElementById("gen_btn");
-genBtn.onclick = function() {update();};
+genBtn.onclick = function() {update()};
