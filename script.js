@@ -41,7 +41,6 @@ class Captcha {
     ctx.transform(1, 0, 0, 1, 0, 0);
     ctx.fillStyle=randColor;
     ctx.font = "45px Times";
-
     ctx.fillText(captchaStr, 5, 50);
     }
 
