@@ -6,11 +6,12 @@ const charsList = [0,1,2,3,4,5,6,7,8,9,"A", "B", "C", "D", "E", "F",
                'y', 'z'];
 
 class Captcha {
-  constructor(length, characters, width, height) {
+  constructor(length, characters, width, height, fontSize) {
     this.len = length
     this.chars = characters
     this.width = width
     this.height = height
+    this.fontSize = fontSize
   }
 
   genStr(){
@@ -36,27 +37,54 @@ class Captcha {
     ctx.putImageData(imageData, 0, 0);
     let randColor = `rgb(${[Math.random()*128 + 128,
                         Math.random()*128 + 128,
-                        Math.random()*128 + 128, .4].join()})`;
+                        Math.random()*128 + 128, .45].join()})`;
 
     ctx.transform(1, 0, 0, 1, 0, 0);
     ctx.fillStyle=randColor;
-    ctx.font = "45px Times";
-    ctx.fillText(captchaStr, 5, 50);
+    ctx.font = `${this.fontSize}px Times`;
+    ctx.fillText(str, 5, 50);
     }
+  }
 
+  distortCanvas(){
+    let c = document.getElementById("captchaID");
+    let ctx = c.getContext("2d");
+    let imd = ctx.getImageData(0,0,this.width,this.height);
+
+    let imdCopy = ctx.getImageData(0,0,this.width,this.height);
+    
+    let w = imd.width * 4
+    let d = imd.data
+    let d1 = imdCopy.data
+    let len = d.length
+
+    for (let i=0; i < len; i+=4) {
+      let y = Math.floor(i / w)
+      let x = i - (w * y);
+      let j = (y + Math.floor(8 * Math.sin(.016 * x * (1+(Math.random()/10))))) * w + x;
+
+      d1[j] = d[i];
+      d1[j + 1] = d[i + 1];
+      d1[j + 2] = d[i + 2];
+      d1[j + 3] = d[i + 3];
+    } 
+    
+    ctx.putImageData(imdCopy, 0, 0)
   }
 }
 
-let cap = new Captcha(6,charsList, 200, 80);
+let cap = new Captcha(6,charsList, 200, 80, 50);
 
 let captchaStr = cap.genStr();
 cap.genCanvas(captchaStr);
-document.getElementById('letters').innerHTML = captchaStr;
+cap.distortCanvas();
+//document.getElementById('letters').innerHTML = captchaStr;
 
 function update() {
   captchaStr = cap.genStr();
   cap.genCanvas(captchaStr);
-  document.getElementById('letters').innerHTML = captchaStr;
+  cap.distortCanvas();
+  //document.getElementById('letters').innerHTML = captchaStr;
 }
 
 function validateForm() {
