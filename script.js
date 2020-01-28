@@ -17,7 +17,7 @@ class Captcha {
   genStr(){
     let charArr = [];
     for (let i = 0; i < this.len; i++) {
-      charArr.push(this.chars[Math.floor(Math.random()*(this.chars.length+1))]);
+      charArr.push(this.chars[Math.floor(Math.random()*(this.chars.length))]);
     }
     let charStr = charArr.join("");
     return charStr;
@@ -42,7 +42,7 @@ class Captcha {
     ctx.transform(1, 0, 0, 1, 0, 0);
     ctx.fillStyle=randColor;
     ctx.font = `${this.fontSize}px Times`;
-    ctx.fillText(str, 5, 50);
+    ctx.fillText(str, 5, this.fontSize);
     }
   }
 
@@ -54,26 +54,42 @@ class Captcha {
     let imdCopy = ctx.getImageData(0,0,this.width,this.height);
     
     let w = imd.width * 4
+    let h = imd.height * 4
     let d = imd.data
     let d1 = imdCopy.data
     let len = d.length
 
+    // for (let i=0; i < len; i+=4) {
+    //   let y = Math.floor(i / w)
+    //   let x = i - (w * y);
+    //   let j = (y + Math.floor(8 * Math.sin(.016 * x * (1+(Math.random()/10))))) * w + x;
+
+    //   d1[j] = d[i];
+    //   d1[j + 1] = d[i + 1];
+    //   d1[j + 2] = d[i + 2];
+    //   d1[j + 3] = d[i + 3];
+    // } 
+
     for (let i=0; i < len; i+=4) {
-      let y = Math.floor(i / w)
-      let x = i - (w * y);
-      let j = (y + Math.floor(8 * Math.sin(.016 * x * (1+(Math.random()/10))))) * w + x;
+  
+      let j = i + (w * Math.floor(Math.sin((i % w) * .016) * 10));
 
       d1[j] = d[i];
       d1[j + 1] = d[i + 1];
       d1[j + 2] = d[i + 2];
       d1[j + 3] = d[i + 3];
     } 
+    //ctx.translate(this.width, this.height / this.width);
+    ctx.rotate(Math.PI / 2);
+    ctx.fillText('word',20,20,20);
+
+
     
     ctx.putImageData(imdCopy, 0, 0)
   }
 }
 
-let cap = new Captcha(6,charsList, 200, 80, 50);
+let cap = new Captcha(3,charsList, 200, 120, 80);
 
 let captchaStr = cap.genStr();
 cap.genCanvas(captchaStr);
