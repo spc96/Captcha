@@ -35,9 +35,9 @@ class Captcha {
          data[i*4+2]=Math.pow(Math.random(),2)*256 | 0; // Blue
          data[i*4+3]=100; // alpha (transparency)
     ctx.putImageData(imageData, 0, 0);
-    let randColor = `rgb(${[Math.random()*128 + 128,
-                        Math.random()*128 + 128,
-                        Math.random()*128 + 128, .45].join()})`;
+    let randColor = `rgb(${[Math.random()*100 + 156,
+                        Math.random()*100 + 156,
+                        Math.random()*100 + 156, .45].join()})`;
 
     ctx.transform(1, 0, 0, 1, 0, 0);
     ctx.fillStyle=randColor;
@@ -60,9 +60,8 @@ class Captcha {
     let len = d.length
 
     // for (let i=0; i < len; i+=4) {
-    //   let y = Math.floor(i / w)
-    //   let x = i - (w * y);
-    //   let j = (y + Math.floor(8 * Math.sin(.016 * x * (1+(Math.random()/10))))) * w + x;
+  
+    //   let j = i + (w * Math.floor(Math.sin((i % w) * .016) * 10));
 
     //   d1[j] = d[i];
     //   d1[j + 1] = d[i + 1];
@@ -71,25 +70,41 @@ class Captcha {
     // } 
 
     for (let i=0; i < len; i+=4) {
+      
+      let row = Math.floor(i/w) + 1;
   
-      let j = i + (w * Math.floor(Math.sin((i % w) * .016) * 10));
+      let xSin = i + (Math.floor(Math.sin(row * .11) * 18));
+
+      let ySin = i + (w * Math.floor(Math.sin((i % w) * .016) * 10));
+
+      let j = (xSin % w) + ySin;
+      j = xSin;
+     
 
       d1[j] = d[i];
       d1[j + 1] = d[i + 1];
       d1[j + 2] = d[i + 2];
       d1[j + 3] = d[i + 3];
     } 
-    //ctx.translate(this.width, this.height / this.width);
-    ctx.rotate(Math.PI / 2);
-    ctx.fillText('word',20,20,20);
 
+    let imdCopy2 = ctx.getImageData(0,0,this.width,this.height);
+    let d2 = imdCopy2.data
 
+    for (let i=0; i < len; i+=4) {
+  
+      let j = i + (w * Math.floor(Math.sin((i % w) * .016) * 10));
+
+      d2[j] = d[i];
+      d2[j + 1] = d1[i + 1];
+      d2[j + 2] = d1[i + 2];
+      d2[j + 3] = d1[i + 3];
+    } 
     
-    ctx.putImageData(imdCopy, 0, 0)
+    ctx.putImageData(imdCopy2, 0, 0)
   }
 }
 
-let cap = new Captcha(3,charsList, 200, 120, 80);
+let cap = new Captcha(6,charsList, 260, 100, 70);
 
 let captchaStr = cap.genStr();
 cap.genCanvas(captchaStr);
