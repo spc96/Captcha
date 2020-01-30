@@ -13,7 +13,6 @@ class Captcha {
     this.height = height
     this.fontSize = fontSize
   }
-
   genStr(){
     let charArr = [];
     for (let i = 0; i < this.len; i++) {
@@ -45,12 +44,10 @@ class Captcha {
     ctx.fillText(str, 5, this.fontSize);
     }
   }
-
   distortCanvas(){
     let c = document.getElementById("captchaID");
     let ctx = c.getContext("2d");
     let imd = ctx.getImageData(0,0,this.width,this.height);
-
     let imdCopy = ctx.getImageData(0,0,this.width,this.height);
     
     let w = imd.width * 4
@@ -59,52 +56,27 @@ class Captcha {
     let d1 = imdCopy.data
     let len = d.length
 
-    // for (let i=0; i < len; i+=4) {
-  
-    //   let j = i + (w * Math.floor(Math.sin((i % w) * .016) * 10));
-
-    //   d1[j] = d[i];
-    //   d1[j + 1] = d[i + 1];
-    //   d1[j + 2] = d[i + 2];
-    //   d1[j + 3] = d[i + 3];
-    // } 
-
     for (let i=0; i < len; i+=4) {
       
+      //Applies horizontal sine wave transformation
       let row = Math.floor(i/w) + 1;
-  
       let xSin = i + (Math.floor(Math.sin(row * .11) * 18));
 
-      let ySin = i + (w * Math.floor(Math.sin((i % w) * .016) * 10));
+      //Applies vertical sine wave transformation to xSin (you can replace xSin with i)
+      let ySin = xSin + (w * Math.floor(Math.sin((xSin % w) * .016) * 10));
 
-      let j = (xSin % w) + ySin;
-      j = xSin;
-     
+      let j = ySin;
 
       d1[j] = d[i];
       d1[j + 1] = d[i + 1];
       d1[j + 2] = d[i + 2];
       d1[j + 3] = d[i + 3];
     } 
-
-    let imdCopy2 = ctx.getImageData(0,0,this.width,this.height);
-    let d2 = imdCopy2.data
-
-    for (let i=0; i < len; i+=4) {
-  
-      let j = i + (w * Math.floor(Math.sin((i % w) * .016) * 10));
-
-      d2[j] = d[i];
-      d2[j + 1] = d1[i + 1];
-      d2[j + 2] = d1[i + 2];
-      d2[j + 3] = d1[i + 3];
-    } 
-    
-    ctx.putImageData(imdCopy2, 0, 0)
+    ctx.putImageData(imdCopy, 0, 0);
   }
 }
 
-let cap = new Captcha(6,charsList, 260, 100, 70);
+let cap = new Captcha(6,charsList, 270, 90, 70);
 
 let captchaStr = cap.genStr();
 cap.genCanvas(captchaStr);
@@ -125,6 +97,7 @@ function validateForm() {
     return true;
   }
   else {
+    update();
     alert('Captcha Failed')
     return false;
   }
