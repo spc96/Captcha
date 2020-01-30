@@ -24,10 +24,6 @@ h2 {
   border-image-slice: 1;
 }
 
-.hidden {
-  display: none;
-}
-
 body {
     text-align:left;
     background-color: rgb(0, 0, 0);
@@ -47,12 +43,10 @@ button {
 .btn_group{
   text-align: center;
 }
-
 button:hover {
   transition: .7s;
   background-color: rgba(190, 2, 2, .6);
 }
-
 p {
   margin: auto;
   padding: 5px
@@ -60,30 +54,4 @@ p {
 
 form {
   padding: 3%
-}
-
-
-button:hover {
-  transition: .7s;
-  background-color: rgba(190, 2, 2, .6);
-}
-
-p {
-  margin: auto;
-  padding: 2px
-}
-
-form {
-  padding: 3%
-}
-
-.answer {
-  text-align: left;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-
-.question{
-  margin-bottom: 10px;
-  margin-top: 30px;
 }
